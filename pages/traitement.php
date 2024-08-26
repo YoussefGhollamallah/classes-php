@@ -21,5 +21,5 @@
     }
     ?>
     
-    <a href="inscription.php">Retour au formulaire d'inscription</a>
+    <a href="connexion.php">Retour au formulaire d'inscription</a>
 </section>

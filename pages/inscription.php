@@ -1,9 +1,13 @@
+<?php
+// Inclure le fichier User.php en utilisant le chemin correct
+include_once "classes/inscriptionDB.php";
+
+
+?>
+
 <section>
-
-    <?php include_once "../classes/User.php"; ?>
-
     <h2>Formulaire d'inscription</h2>   
-    <form action="" method="post">
+    <form method="post">
         <label for="login">Login :</label>
         <input type="text" name="login" id="login" required><br><br>
 

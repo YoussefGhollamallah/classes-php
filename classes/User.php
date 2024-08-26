@@ -1,6 +1,6 @@
 <?php
 
-
+// Vérification si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Connexion à la base de données
     $db = new mysqli('localhost', 'root', 'root', 'classes');
@@ -22,9 +22,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Tentative d'inscription de l'utilisateur
     if ($user->register()) {
-        header("Location: ../pages/traitement.php?status=success");
+        header("Location: pages/traitement.php?status=success");
+        exit();
     } else {
-        header("Location: ../pages/traitement.php?status=error");
+        header("Location: pages/traitement.php?status=error");
+        exit();
     }
 
     // Fermeture de la connexion à la base de données
@@ -32,7 +34,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 
 class User {
-
     private int $id;
     public string $login;
     private string $password;
@@ -41,49 +42,71 @@ class User {
     public string $lastname;
     private mysqli $db;
 
-    public function __construct(mysqli $db,string $login, string $password, string $email, string $firstname, string $lastname)
-    {
+    public function __construct(mysqli $db, string $login, string $password = '', string $email = '', string $firstname = '', string $lastname = '') {
         $this->db = $db;
         $this->login = $login;
-        $this->password = password_hash($password, PASSWORD_DEFAULT);
+        $this->password = $password !== "" ? password_hash($password, PASSWORD_DEFAULT) : "";
         $this->email = $email;
         $this->firstname = $firstname;
         $this->lastname = $lastname;
     }
 
+    
     public function setEmail(string $email): void {
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $this->email = $email;
         } else {
-            throw new InvalidArgumentException("Invalid email address");
+            throw new InvalidArgumentException("Adresse email invalide");
         }
     }
-    
+
     // Méthode pour enregistrer un utilisateur dans la base de données
-    public function register(): bool
-    {
+    public function register(): bool {
         // Vérification si le login ou l'email existe déjà dans la base de données
         $stmt = $this->db->prepare("SELECT id FROM utilisateurs WHERE login = ? OR email = ?");
         $stmt->bind_param("ss", $this->login, $this->email);
         $stmt->execute();
         $stmt->store_result();
-        
+
         if ($stmt->num_rows > 0) {
             // Un utilisateur avec ce login ou email existe déjà
             $stmt->close();
             return false;
         }
-        
+
         // Insertion de l'utilisateur dans la base de données
         $stmt = $this->db->prepare("INSERT INTO utilisateurs (login, password, email, firstname, lastname) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("sssss", $this->login, $this->password, $this->email, $this->firstname, $this->lastname);
-        
+
         $result = $stmt->execute();
         $stmt->close();
 
         return $result;
     }
 
-}
+    // Méthode pour connecter un utilisateur
+    public function connect(string $password): bool {
+        // Vérification des informations de connexion
+        $stmt = $this->db->prepare("SELECT id, password FROM utilisateurs WHERE login = ?");
+        $stmt->bind_param("s", $this->login);
+        $stmt->execute();
+        $stmt->store_result();
 
+        if ($stmt->num_rows > 0) {
+            $stmt->bind_result($user_id, $hashed_password);
+            $stmt->fetch();
+
+            if (password_verify($password, $hashed_password)) {
+                // Connexion réussie
+                $_SESSION['user_id'] = $user_id;
+                $stmt->close();
+                return true;
+            }
+        }
+
+        // Échec de la connexion
+        $stmt->close();
+        return false;
+    }
+}
 ?>
