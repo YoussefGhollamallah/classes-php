@@ -27,7 +27,7 @@
         if (file_exists($file)) {
             require_once($file);
         } else {
-            echo "<h1>Bienvenue sur mon site</h1>";
+            require_once (__DIR__. "/pages/page404.php");
         }
         ?>
     </main>

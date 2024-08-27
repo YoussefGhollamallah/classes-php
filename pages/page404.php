@@ -5,24 +5,26 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 100dvh;
+        height: calc(100dvh - 55px);
+        color: #333;
+        background-color: #fff;
     }
 
         h1 {
             font-size: 100px;
             font-weight: bold;
             margin-bottom: 30px;
-            color: white;
+        
         }
         p {
             font-size: 24px;
             margin-bottom: 20px;
-            color: white;
+        
         }
         a {
             color: #007bff;
             text-decoration: none;
-            color: white;
+        
         }
         a:hover {
             text-decoration: underline;
