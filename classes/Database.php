@@ -7,7 +7,7 @@ class Database {
     private $host = "DM_NAME"; 
     private $username = 'DM_USER'; 
     private $password = 'DM_PASSWORD'; 
-    private $dbname = 'DM_HOST'; 
+    private $dbname = 'DM_HOST';
     private $connection;
 
     public function __construct() {
