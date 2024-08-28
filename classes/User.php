@@ -20,6 +20,18 @@ class User {
         $this->lastname = $lastname;
     }
 
+        // Setter pour l'ID
+        public function setId(int $id): void
+        {
+            $this->id = $id;
+        }
+    
+        // Getter pour l'ID
+        public function getId(): int
+        {
+            return $this->id;
+        }
+
     // Setter method for password to hash it before storing
     public function setPassword(string $password): void
     {
@@ -91,39 +103,79 @@ class User {
         }
     }
 
-    // Méthode pour mettre à jour les informations de l'utilisateur
-    public function update($newLogin, $newPassword, $newEmail, $newFirstname, $newLastname): bool
+
+    // Charger les informations utilisateur
+    public function loadUserData(): void
     {
-        // Vérifier si un nouveau mot de passe est fourni et le hacher si c'est le cas
+        $stmt = $this->db->prepare("SELECT login, email, firstname, lastname FROM utilisateurs WHERE id = ?");
+        $stmt->bind_param('i', $this->id);
+        $stmt->execute();
+        $stmt->bind_result($this->login, $this->email, $this->firstname, $this->lastname);
+        $stmt->fetch();
+        $stmt->close();
+    }
+
+    public function update(int $userId, $newLogin, $newPassword, $newEmail, $newFirstname, $newLastname): bool
+    {
+        // Si un nouveau mot de passe est fourni, le hacher
         if (!empty($newPassword)) {
             $this->setPassword($newPassword);
         } else {
-            $this->password = $this->getPassword(); // Garder l'ancien mot de passe si aucun nouveau mot de passe n'est fourni
+            // Si aucun nouveau mot de passe n'est fourni, conserver l'ancien mot de passe
+            $stmt = $this->db->prepare("SELECT password FROM utilisateurs WHERE id = ?");
+            $stmt->bind_param('i', $userId);
+            $stmt->execute();
+            $stmt->bind_result($oldPassword);
+            $stmt->fetch();
+            $this->password = $oldPassword;
+            $stmt->close();
         }
+        $sql = "UPDATE utilisateurs SET login = ?, email = ?, firstname = ?, lastname = ?";
 
-        // Préparer la requête SQL pour mettre à jour l'utilisateur
-        $stmt = $this->db->prepare("UPDATE utilisateurs SET login = ?, password = ?, email = ?, firstname = ?, lastname = ? WHERE id = ?");
-        
+        // Ajouter la mise à jour du mot de passe si fourni
+        if (!empty($newPassword)) {
+            $this->setPassword($newPassword);
+            $sql .= ", password = ?";
+        }
+    
+        $sql .= " WHERE id = ?";
+    
+        $stmt = $this->db->prepare($sql);
         if ($stmt === false) {
             die('Erreur de préparation de la requête : ' . $this->db->error);
         }
-
-        // Lier les paramètres de la requête avec les nouvelles valeurs
-        $stmt->bind_param("sssssi", $newLogin, $this->password, $newEmail, $newFirstname, $newLastname, $this->id);
-
+    
+        // Définir les types de paramètres pour la requête
+        $types = "ssss";
+        if (!empty($newPassword)) {
+            $types .= "s";
+        }
+        $types .= "i";
+    
+        // Préparer les paramètres pour la requête
+        $params = [$newLogin, $newEmail, $newFirstname, $newLastname];
+        if (!empty($newPassword)) {
+            $params[] = $this->password;
+        }
+        $params[] = $userId;
+    
+        // Lier les paramètres de la requête
+        $stmt->bind_param($types, ...$params);
+    
         // Exécuter la requête
         if ($stmt->execute()) {
-            // Si la mise à jour a réussi, mettre à jour les propriétés de l'objet
+            // Mettre à jour les propriétés de l'objet
             $this->login = $newLogin;
             $this->email = $newEmail;
             $this->firstname = $newFirstname;
             $this->lastname = $newLastname;
-
+    
             return true;
         } else {
             echo "Erreur lors de la mise à jour de l'utilisateur : " . $stmt->error;
             return false;
         }
     }
+    
 }
 ?>
