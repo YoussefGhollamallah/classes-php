@@ -15,7 +15,7 @@ if ($connection->connect_error) {
     die('Erreur de connexion : ' . $connection->connect_error);
 }
 
-require_once(__DIR__ . '/../classes/User.php');
+require_once (__DIR__ . '/../classes/User.php');
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
