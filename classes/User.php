@@ -90,5 +90,40 @@ class User {
             return false; // Utilisateur non trouvé
         }
     }
+
+    // Méthode pour mettre à jour les informations de l'utilisateur
+    public function update($newLogin, $newPassword, $newEmail, $newFirstname, $newLastname): bool
+    {
+        // Vérifier si un nouveau mot de passe est fourni et le hacher si c'est le cas
+        if (!empty($newPassword)) {
+            $this->setPassword($newPassword);
+        } else {
+            $this->password = $this->getPassword(); // Garder l'ancien mot de passe si aucun nouveau mot de passe n'est fourni
+        }
+
+        // Préparer la requête SQL pour mettre à jour l'utilisateur
+        $stmt = $this->db->prepare("UPDATE utilisateurs SET login = ?, password = ?, email = ?, firstname = ?, lastname = ? WHERE id = ?");
+        
+        if ($stmt === false) {
+            die('Erreur de préparation de la requête : ' . $this->db->error);
+        }
+
+        // Lier les paramètres de la requête avec les nouvelles valeurs
+        $stmt->bind_param("sssssi", $newLogin, $this->password, $newEmail, $newFirstname, $newLastname, $this->id);
+
+        // Exécuter la requête
+        if ($stmt->execute()) {
+            // Si la mise à jour a réussi, mettre à jour les propriétés de l'objet
+            $this->login = $newLogin;
+            $this->email = $newEmail;
+            $this->firstname = $newFirstname;
+            $this->lastname = $newLastname;
+
+            return true;
+        } else {
+            echo "Erreur lors de la mise à jour de l'utilisateur : " . $stmt->error;
+            return false;
+        }
+    }
 }
 ?>
