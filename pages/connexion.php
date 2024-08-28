@@ -20,7 +20,7 @@
                         <input type="password" id="password" name="password" class="form-control" required>
                     </div>
 
-                    <input type="submit" value="S'inscrire">
+                    <input type="submit" value="Se connecter">
                 </div>
             </form>
         </section>
