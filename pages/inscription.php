@@ -1,14 +1,10 @@
-<?php 
 
-require_once (__DIR__. "/../includes/_header.php");
-
-?>
 
 <main>
 
     <section id="form-inscription">
         
-    <form  action="traitement_inscription.php" method="post">
+    <form  action="pages/traitement_inscription.php" method="post">
     <label for="login">Login :</label>
     <input type="text" id="login" name="login" required><br><br>
     
@@ -41,8 +37,3 @@ require_once (__DIR__. "/../includes/_header.php");
 </section>
 
 </main>
-    <?php 
-
-    require_once (__DIR__ . "/../includes/_footer.php");
-
-    ?>
