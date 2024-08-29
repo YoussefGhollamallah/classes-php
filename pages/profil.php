@@ -14,9 +14,9 @@ if (!isset($_SESSION['user_id'])) {
 
 // Inclure le fichier de la classe User
 require_once  "classes/User.php"; 
+require_once realpath( __DIR__ . "/../config/config.php");
 
-
-$db = new mysqli('localhost', 'root', 'root', 'classes'); 
+$db = new mysqli(DM_HOST, DM_USER, DM_PASSWORD, DM_NAME); 
 
 // Instancier l'utilisateur avec la connexion
 $user = new User($db);

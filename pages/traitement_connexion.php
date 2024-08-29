@@ -1,14 +1,10 @@
 <?php
 session_start(); 
 
-// Paramètres de connexion à la base de données
-$host = 'localhost';      
-$username = 'root';      
-$password = 'root';          
-$dbname = 'classes';     
+require_once realpath(__DIR__ . "/../config/config.php") ;
 
 // Créer une connexion à la base de données
-$connection = new mysqli($host, $username, $password, $dbname);
+$connection = new mysqli(DM_HOST, DM_USER, DM_PASSWORD, DM_NAME);
 
 // Vérifier la connexion
 if ($connection->connect_error) {
