@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
 // Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     
-    header('Location: index.php?page=login');
+    header('Location: index.php?page=profil');
     exit;
 }
 
@@ -41,6 +41,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         echo "Erreur lors de la mise à jour du profil.";
     }
+
+
+    // Si le formulaire de suppression est soumis, appeler la méthode delete()
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_account'])) {
+        if ($user->delete()) {
+            // Stocker un message de succès dans la session
+            $_SESSION['message'] = "Votre compte a été supprimé avec succès.";
+            // Rediriger vers la page d'accueil
+            header('Location: index.php');
+            exit;
+        } else {
+            echo "Erreur lors de la suppression du compte.";
+        }
+    }
+
 }
 
 
@@ -66,5 +81,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <input type="text" id="lastname" name="lastname" value="<?php echo htmlspecialchars($user->lastname); ?>" required><br>
 
     <button type="submit">Mettre à jour</button>
+
+    <button type="submit" name="delete_account" onclick="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.');">
+        Supprimer mon compte
+    </button>
 </form>
+
 </main>
