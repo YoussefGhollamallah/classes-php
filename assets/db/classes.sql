@@ -32,7 +32,7 @@ CREATE TABLE `utilisateurs` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `login` (`login`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `utilisateurs` (
 
 LOCK TABLES `utilisateurs` WRITE;
 /*!40000 ALTER TABLE `utilisateurs` DISABLE KEYS */;
-INSERT INTO `utilisateurs` VALUES (19,'youssef','$2y$10$lmK/QQ16nHyhJCxi7McHxe7GbmOeLhTvY5vGHfo5aCBiV6piqEzTC','youssef.gh@live.fr','Youssef','Ghollamallah'),(20,'nicolas','$2y$10$4PSb5OfsiolYbM60JYBGIO/zFeLM1bCxUdO6tl9dK8RtgjjdPkehS','nicolas.degabriel@laplateforme.io','nicolas','degabriel');
+INSERT INTO `utilisateurs` VALUES (20,'nicolas','$2y$10$4PSb5OfsiolYbM60JYBGIO/zFeLM1bCxUdO6tl9dK8RtgjjdPkehS','nicolas.degabriel@laplateforme.io','nicolas','degabriel'),(21,'alister','$2y$10$KlJmsFkzZuBy1L0mPsOcKuHUq0AwyyeG39zpRgH2ocUNBkXfYB49q','alistar@live.fr','alistar','crowley'),(22,'mikasa','$2y$10$1PB0pE2nEYSqWdAeQWpK6O3b7u7tj1VS4DDxnx.D7wPg3CErbOqgq','mikasa@laplateforme.io','mikasa','sukasa'),(24,'testeur','$2y$10$Zk4NIbcOG38XuutSPIMU1ew6uZMU89WBYkiAnLTHuYV3TQhhj4QCC','newemail@live.fr','youssef','gho'),(25,'youssef','$2y$10$6szXfHhOBBEfaW0qJBp3jO0sj1qBiNUv5lVArMp2kM/17snM7XWnq','youssef@live.fr','youssef','ghollamallah'),(26,'Albator','$2y$10$Vhs00Jo6Gku7SwVNWhw3Ve3G.dLWHB3KD7K.ISjX3mmHTHm4orpe6','albator@gmail.fr','albator','captain');
 /*!40000 ALTER TABLE `utilisateurs` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-28 14:08:45
+-- Dump completed on 2024-08-29 13:16:33
