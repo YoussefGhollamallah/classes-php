@@ -225,42 +225,42 @@ class User {
     }
 
     // Méthode pour déconnecter l'utilisateur
+
     public function disconnect(string $redirectUrl = 'index.php?page=index'): void
     {
-        // Démarrer la session
-        session_start();
-
         // Détruire toutes les données de la session
         session_unset();
-        session_destroy();
-
+         session_destroy();
+        
         // Rediriger vers la page spécifiée
-        header('Location: ' . $redirectUrl);
+         header('Location: ' . $redirectUrl);
         exit;
     }
+        
+    
 
     public function delete(): bool
-{
-    // Préparer la requête pour supprimer l'utilisateur
-    $stmt = $this->db->prepare("DELETE FROM utilisateurs WHERE id = ?");
-    if ($stmt === false) {
-        die('Erreur de préparation de la requête : ' . $this->db->error);
-    }
-    $stmt->bind_param('i', $this->id);
+    {
+        // Préparer la requête pour supprimer l'utilisateur
+        $stmt = $this->db->prepare("DELETE FROM utilisateurs WHERE id = ?");
+        if ($stmt === false) {
+            die('Erreur de préparation de la requête : ' . $this->db->error);
+        }
+        $stmt->bind_param('i', $this->id);
 
-    // Exécuter la requête
-    if ($stmt->execute()) {
-        // Si la suppression réussit, déconnecter l'utilisateur
-        $this->disconnect();
+        // Exécuter la requête
+        if ($stmt->execute()) {
+            // Si la suppression réussit, déconnecter l'utilisateur
+            $this->disconnect();
 
-        // Retourner true pour indiquer que la suppression a réussi
-        return true;
-    } else {
-        // En cas d'erreur, retourner false
-        echo "Erreur lors de la suppression de l'utilisateur : " . $stmt->error;
-        return false;
+            // Retourner true pour indiquer que la suppression a réussi
+            return true;
+        } else {
+            // En cas d'erreur, retourner false
+            echo "Erreur lors de la suppression de l'utilisateur : " . $stmt->error;
+            return false;
+        }
     }
-}
 
 
 }
