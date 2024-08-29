@@ -20,7 +20,7 @@
                         <input type="password" id="password" name="password" class="form-control" required>
                     </div>
 
-                    <input type="submit" value="Se connecter">
+                    <input style="margin-top: 10px;" type="submit" value="Se connecter">
                 </div>
             </form>
         </section>
