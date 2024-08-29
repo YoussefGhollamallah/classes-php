@@ -5,7 +5,7 @@ require_once 'classes/User.php';
 require_once realpath(__DIR__ . "/../config/config.php");
 
 // Connexion à la base de données
-$db = new mysqli(DM_HOST, DM_USER, DM_PASSWORD, DM_NAME);
+$db = new mysqli(DM_HOST, DM_USER, DM_PASSWORD, DM_DBNAME);
 
 // Vérifier la connexion
 if ($db->connect_error) {

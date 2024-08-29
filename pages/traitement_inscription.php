@@ -3,7 +3,7 @@
 require_once realpath(__DIR__ . "/../config.php");
 
 // Créer une connexion à la base de données
-$connection = new mysqli(DM_HOST, DM_USER, DM_PASSWORD, DM_NAME);
+$connection = new mysqli(DM_HOST, DM_USER, DM_PASSWORD, DM_DBNAME);
 
 // Vérifier la connexion
 if ($connection->connect_error) {

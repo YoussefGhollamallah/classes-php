@@ -16,7 +16,7 @@ if (!isset($_SESSION['user_id'])) {
 require_once  "classes/User.php"; 
 require_once realpath( __DIR__ . "/../config/config.php");
 
-$db = new mysqli(DM_HOST, DM_USER, DM_PASSWORD, DM_NAME); 
+$db = new mysqli(DM_HOST, DM_USER, DM_PASSWORD, DM_DBNAME); 
 
 // Instancier l'utilisateur avec la connexion
 $user = new User($db);
